@@ -9,5 +9,9 @@ public class HomeController {
     public String getHome(){
         return "home";
     }
+    @RequestMapping("registration")
+    public String getRegistration(){
+        return "registration";
+    }
 
 }
