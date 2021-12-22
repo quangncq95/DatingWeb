@@ -10,9 +10,9 @@
 <body>
 <jsp:include page="/WEB-INF/views/common/nav2.jsp"></jsp:include>
 
-
-
-
+<form>
+    <button formmethod="post" formaction="profile">Sign Up</button>
+</form>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
 </body>
 </html>

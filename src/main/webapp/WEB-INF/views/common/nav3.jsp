@@ -11,10 +11,16 @@
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="/home" class="nav-link px-2 text-white" style="font-family: 'Baskerville Old Face';margin-left: 500px;">TRUE LOVE</a></li>
             </ul>
-            <div class="text-end">
-                <form action="/home" method="post">
-                    <button type="submit"  class="btn btn-warning">Login</button>
-                </form>
+            <div class="dropdown text-end">
+                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                </a>
+                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                    <li><a class="dropdown-item" href="">Settings</a></li>
+                    <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="/home">Sign out</a></li>
+                </ul>
             </div>
         </div>
     </div>
