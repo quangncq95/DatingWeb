@@ -14,7 +14,8 @@
             </ul>
             <div class="text-end">
                 <form action="/registration" method="post">
-                    <button type="submit"  class="btn btn-warning">Sign-up</button>
+                    <button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Sign-up</button>
+                    <button type="button"  class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Login</button>
                 </form>
             </div>
         </div>
