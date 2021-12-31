@@ -18,13 +18,16 @@
         .body {
             background-image: url("/images/background.png");
         }
+        .error{
+            color: red;
+        }
     </style>
 </head>
 <body class="body">
 <header class="p-3 text-white" style="background-color : #ffc0cb ;opacity: 0.7">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/home" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            <a href="/encounters" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <img src="/images/mabel1.png" width="80px">
             </a>
 
@@ -64,6 +67,9 @@
                             <div class="col-md-12">
                                 <input type="password" class="form-control" name="password" id="LoginPassword"
                                        placeholder="Password" value="" required="">
+                            </div>
+                            <div class="col-md-12">
+                                <a style="color: deepskyblue" href="/home">Forgot password?</a>
                             </div>
                             <div class="modal-footer">
                                 <button type="submit" class="btn btn-primary" formmethod="post"
@@ -222,10 +228,10 @@
                     contentType: "application/json",
                     dataType: "json",
                     success: function (msg) {
-                        alert("Lưu thành công");
+                        alert("Sign Up Success");
                     },
                     error: function (err){
-                        alert("Lưu thất bại");
+                        alert("Sign Up Failed");
                     }
                 });
             }

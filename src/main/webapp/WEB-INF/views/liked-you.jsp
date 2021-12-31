@@ -8,7 +8,7 @@
     <jsp:include page="/WEB-INF/views/common/head.jsp"></jsp:include>
 </head>
 <body>
-<jsp:include page="/WEB-INF/views/common/nav3.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 
 
 <div class="container">
@@ -33,6 +33,6 @@
 <h1 style="text-align: center">Test</h1>
 
 
-<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
+<%--<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>--%>
 </body>
 </html>
