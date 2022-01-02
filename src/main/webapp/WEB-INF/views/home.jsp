@@ -14,14 +14,11 @@
             top: 200px;
             left: 500px;
         }
-
-        .body {
-            background-image: url("/images/background.png");
-        }
         .error{
             color: red;
         }
     </style>
+    <link rel="stylesheet" href="/style/background_home.css">
 </head>
 <body class="body">
 <header class="p-3 text-white" style="background-color : #ffc0cb ;opacity: 0.7">

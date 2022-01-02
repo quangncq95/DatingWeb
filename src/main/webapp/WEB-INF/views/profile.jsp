@@ -7,8 +7,114 @@
 <html lang="en">
 <head>
     <jsp:include page="/WEB-INF/views/common/head.jsp"></jsp:include>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <style>
+        #container-profile{
+            width:50%;
+            height: 700px;
+            background-color:#f5f5f5;
+            position:relative;
+            margin: auto !important;
+            overflow: auto;
+        }
+
+        .imagePreview {
+            width : 100%;
+            height: 250px;
+            background-position: center center;
+            background-color:#fff;
+            background-size: cover;
+            background-repeat:no-repeat;
+            display: block;
+            box-shadow:2px 2px rgba(0,0,0,0.2);
+            position:relative;
+
+        }
+        .uploadBtn
+        {
+            display:block;
+            width : 40px;
+            height : 40px;
+            border-radius:50%;
+            box-shadow:0px 4px 6px 2px rgba(0,0,0,0.2);
+            background-color:#4bd7ef;
+            line-height:40px;
+            position:absolute;
+            text-align:center;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border:none;
+            color:white;
+        }
+        .uploadBtn:hover
+        {
+            background-color: #436C72FF;
+            cursor:pointer;
+        }
+        .del
+        {
+            position:absolute;
+            top:0px;
+            right:0px;
+            width:30px;
+            height:30px;
+            text-align:center;
+            line-height:30px;
+            background-color:rgba(255,255,255,0.6);
+            cursor:pointer;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            $(document).on("click", "i.del", function () {
+                $(this).parent().remove();
+            });
+            $(function () {
+                $(document).on("change", ".uploadFile", function () {
+                    var uploadFile = $(this);
+                    var files = !!this.files ? this.files : [];
+                    if (!files.length || !window.FileReader) return; // no file selected, or no FileReader support
+
+                    if (/^image/.test(files[0].type)) {
+                        // only image file
+                        var reader = new FileReader(); // instance of the FileReader
+                        reader.readAsDataURL(files[0]); // read the local file
+
+                        reader.onloadend = function () {
+                            // set image data as background of div
+                            uploadFile
+                                .closest(".imgUp")
+                                .find(".imagePreview")
+                                .css("background-image", "url(" + this.result + ")");
+
+                            uploadFile
+                                .closest(".imgUp")
+                                .find(".imagePreview")
+                                .children(".uploadBtn").css("display", "none");
+
+                            uploadFile
+                                .closest(".imgUp")
+                                .find(".imagePreview").append('<i class="fa fa-times del"></i>');
+
+                            uploadFile
+                                .closest(".row")
+                                .children(".imgUp")
+                                .last()
+                                .after('<div class="col-md-3 imgUp"><div class="imagePreview"><label class="uploadBtn fa fa-plus"><input type="file" class="uploadFile img" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;"></label></div></div>'
+                                );
+                        };
+                    }
+                });
+            });
+        });
+
+    </script>
 </head>
 <body>
+
 <header class="p-3 text-white" style="background-color : #ffc0cb ">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-between ">
@@ -38,64 +144,112 @@
     </div>
 </header>
 
+<div id="container-profile">
+    <h2>Upload Image</h2>
+    <hr>
+    <div class="container-fluid ">
+        <div class="row">
+            <div class="col-md-3 imgUp">
+                <div class="imagePreview">
+                    <label class="uploadBtn fa fa-plus"><input type="file" class="uploadFile img" value="Upload Photo" style="width: 0px;height: 0px;overflow: hidden;">
+                    </label>
+                </div>
+            </div><!-- col-2 -->
+        </div><!-- row -->
+    </div><!-- container -->
+    <h2>Personal Information</h2>
+    <hr>
+    <div class="container-fluid ">
+        <div class="row">
+                <div class="col-sm-6">
+                    <label for="firstName" class="form-label">First name:</label>
+                    <input type="text" class="form-control" id="firstName" placeholder="" value="" required="">
+                </div>
 
-<div class="wrapper bg-white mt-sm-5">
-    <h4 class="pb-4 border-bottom">Account settings</h4>
-    <div class="d-flex align-items-start py-3 border-bottom"><img
-            src="https://images.pexels.com/photos/1037995/pexels-photo-1037995.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-            class="img" alt="">
-        <div class="pl-sm-4 pl-2" id="img-section"><b>Profile Photo</b>
-            <p>Accepted file type .png. Less than 1MB</p>
-            <button class="btn button border"><b>Upload</b></button>
-        </div>
-    </div>
-    <div class="py-2">
-        <div class="row py-2">
-            <div class="col-md-6"><label>First Name</label> <input type="text" class="bg-light form-control"
-                                                                   placeholder="Steve"></div>
-            <div class="col-md-6 pt-md-0 pt-3"><label>Last Name</label> <input type="text" class="bg-light form-control"
-                                                                               placeholder="Smith"></div>
-        </div>
-        <div class="row py-2">
-            <div class="col-md-6"><label>Email Address</label> <input type="text" class="bg-light form-control"
-                                                                      placeholder="steve_@email.com"></div>
-            <div class="col-md-6 pt-md-0 pt-3"><label>Phone Number</label> <input type="tel"
-                                                                                  class="bg-light form-control"
-                                                                                  placeholder="+1 213-548-6015"></div>
-        </div>
-        <div class="row py-2">
-            <div class="col-md-6"><label for="country">Country</label> <select name="country" id="country"
-                                                                               class="bg-light">
-                <option value="india" selected>India</option>
-                <option value="usa">USA</option>
-                <option value="uk">UK</option>
-                <option value="uae">UAE</option>
-            </select></div>
-            <div class="col-md-6 pt-md-0 pt-3" id="lang"><label for="language">Language</label>
-                <div class="arrow"><select name="language" id="language" class="bg-light">
-                    <option value="english" selected>English</option>
-                    <option value="english_us">English (United States)</option>
-                    <option value="enguk">English UK</option>
-                    <option value="arab">Arabic</option>
-                </select></div>
+                <div class="col-sm-6">
+                    <label for="lastName" class="form-label">Last name:</label>
+                    <input type="text" class="form-control" id="lastName" placeholder="" value="" required="">
             </div>
-        </div>
-        <div class="py-3 pb-4 border-bottom">
-            <form>
-                <button formmethod="post" formaction="encounters" class="btn btn-primary mr-3">Save Changes</button>
-                <button class="btn border button">Cancel</button>
-            </form>
-        </div>
-        <div class="d-sm-flex align-items-center pt-3" id="deactivate">
-            <div><b>Deactivate your account</b>
-                <p>Details about your company account and password</p>
+
+            <div class="col-sm-6">
+                <label for="dateOfBirth" class="form-label">Date of birth:</label>
+                <input type="date" class="form-control" id="dateOfBirth" placeholder="" value="" required="">
             </div>
-            <div class="ml-auto">
-                <button class="btn danger">Deactivate</button>
+
+            <div class="col-sm-12">
+                <form>
+                    <div class="form-label">Gender:</div>
+                    <input type="radio" id="gender1" placeholder="" value="" required="" name="gender">
+                    <label for="gender1">Male</label>
+
+                    <input type="radio" id="gender2" placeholder="" value="" required="" name="gender">
+                    <label for="gender2">Female</label>
+                </form>
             </div>
+            <div class="col-sm-6">
+                <label for="address" class="form-label">Address:</label>
+                <input type="text" class="form-control" id="address" placeholder="" value="" required="">
+            </div>
+
+
+            </div>
+
+        </div>
+    <h2>Education and Job</h2>
+    <hr>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <label for="education" class="form-label">Education</label>
+            <select class="form-select" id="education" required="">
+                <option value="">Choose...</option>
+                <option>College</option>
+                <option>University</option>
+                <option>Masters</option>
+                <option>PhD</option>
+            </select>
+        </div>
+        <div class="col-md-12"></div>
+        <div class="col-md-6">
+            <label for="career" class="form-label">Career</label>
+            <select class="form-select" id="career" required="">
+                <option  value="1">Nghệ thuật</option>
+                <option  value="2">Kinh doanh</option>
+                <option  value="3">Kỹ thuật</option>
+                <option  value="4">Luật pháp</option>
+                <option  value="5">Y dược</option>
+                <option  value="6">Giáo dục</option>
+                <option  value="7">Báo chí</option>
+                <option  value="8">Giải trí</option>
+                <option  value="15">Truyền thông</option>
+                <option  value="9">Ẩm thực</option>
+                <option  value="10">Hành chính</option>
+                <option  value="11">Thể thao</option>
+                <option  value="12">Công an</option>
+                <option  value="16">Quân đội</option>
+                <option  value="17">Xây dựng</option>
+                <option  value="18">Tài chính</option>
+                <option  value="19">Ngân hàng</option>
+                <option  value="20">CNTT</option>
+                <option  value="21">Nông nghiệp</option>
+                <option  value="22">Vận tải</option>
+                <option  value="23">Du lịch</option>
+                <option  value="14">Sinh viên</option>
+                <option  value="24">Chưa đi làm</option>
+                <option  value="13">Khác</option>
+            </select>
         </div>
     </div>
 </div>
+    <br>
+
+</div>
+
+<br>
+<button type="button" class="btn btn-primary btn-lg" style="margin-left: auto;margin-right: auto;display: block">Save</button>
+<br>
+
+
 
 
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
