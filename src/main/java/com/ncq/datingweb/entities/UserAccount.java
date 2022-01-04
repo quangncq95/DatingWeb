@@ -1,46 +1,29 @@
 package com.ncq.datingweb.entities;
 
+
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user_account")
 @Data
-public class User implements UserDetails {
+public class UserAccount implements UserDetails {
     @Id
-    @Column(name = "id")
+    @Column(name = "id_account")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-
-    @Column(name = "name")
-    String name;
-
-    @Column(name = "bday")
-    Date bday;
-
-    @Column(name = "gender")
-    String gender;
-
-    @Column(name = "location")
-    String location;
-
+    Long id_account;
     @Column(name = "email")
     String email;
 
     @Column(name = "password")
     String password;
-
-    @Column(name = "idanh")
-    String idanh;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -14,7 +14,9 @@
             top: 200px;
             left: 500px;
         }
-
+        .error{
+            color: red;
+        }
         .body {
             background-image: url("/images/background.png");
         }
@@ -80,8 +82,6 @@
     </div>
 </div>
 
-<%--<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>--%>
-
 <script>
     $(document).ready(function () {
         $("#change_pass").validate({
@@ -89,7 +89,6 @@
                 current_password: {
                     required: true,
                     minlength: 5,
-                    <%--equalTo: ${currentUser.password}--%>
                 },
                 new_password: {
                     required: true,
@@ -100,21 +99,6 @@
                     equalTo: "#new_password"
                 }
             },
-            // message: {
-            //     current_password: {
-            //         required: "Enter your password",
-            //         minlength: "Password must be at least 5 characters",
-            //         // equalTo: "Does not match the password"
-            //     },
-            //     new_password: {
-            //         required: "Enter your password",
-            //         minlength: "Password must be at least 5 characters"
-            //     },
-            //     retype_new_password: {
-            //         required: "Retype the password",
-            //         equalTo: "Does not match the password"
-            //     }
-            // },
             submitHandler: function () {
                 var data = serializeArrayToObject($("#change_pass"));
                 $.ajax({
@@ -125,6 +109,7 @@
                     dataType: "json",
                     success: function (response) {
                         alert(response.data);
+                        window.location.href="/encounters"
                     },
                     error: function (err) {
                         alert("Thất bại");

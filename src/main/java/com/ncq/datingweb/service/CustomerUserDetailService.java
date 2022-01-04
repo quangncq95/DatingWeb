@@ -1,15 +1,15 @@
 package com.ncq.datingweb.service;
 
 import com.ncq.datingweb.dto.ChangePassword;
+import com.ncq.datingweb.dto.ProfileDto;
 import com.ncq.datingweb.dto.Response;
-import com.ncq.datingweb.dto.UserDto;
-import com.ncq.datingweb.entities.User;
-import com.ncq.datingweb.repository.UserRepository;
+import com.ncq.datingweb.dto.UserAccountDto;
+import com.ncq.datingweb.entities.UserAccount;
+import com.ncq.datingweb.entities.UserDetailsEntities;
+import com.ncq.datingweb.repository.UserAccountRepository;
+import com.ncq.datingweb.repository.UserDetailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,38 +19,49 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @Transactional
 public class CustomerUserDetailService implements UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    UserAccountRepository userAccountRepository;
 
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    @Autowired
+    UserDetailsRepository userDetailsRepository;
+
+    public UserAccount findByEmail(String email) {
+        return userAccountRepository.findByEmail(email);
     }
 
-    public User saveUser(UserDto userDto) {
-        User user = new User();
-        user.setName(userDto.getName());
-        user.setBday(userDto.getBday());
-        user.setGender(userDto.getGender());
-        user.setLocation(userDto.getLocation());
-        user.setEmail(userDto.getEmail());
-        user.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
-        return userRepository.save(user);
+    public UserAccount saveUserAccount(UserAccountDto userAccountDto) {
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        UserAccount userAccount = new UserAccount();
+        userAccount.setEmail(userAccountDto.getEmail());
+        userAccount.setPassword(passwordEncoder.encode(userAccountDto.getPassword()));
+        return userAccountRepository.save(userAccount);
+    }
+
+    public UserDetailsEntities saveUserDetails(ProfileDto profileDto){
+        UserDetailsEntities userDetailsEntities = new UserDetailsEntities();
+        userDetailsEntities.setId_account(profileDto.getId_account());
+        userDetailsEntities.setName(profileDto.getName());
+        userDetailsEntities.setGender(profileDto.getGender());
+        userDetailsEntities.setBirthday(profileDto.getBirthday());
+        userDetailsEntities.setCity(profileDto.getCity());
+        userDetailsEntities.setIntroduce(profileDto.getIntroduce());
+        userDetailsEntities.setEducation(profileDto.getEducation());
+        userDetailsEntities.setCareer(profileDto.getCareer());
+        return userDetailsRepository.save(userDetailsEntities);
     }
 
     public Response changePass(ChangePassword changePassword) {
         Response response = new Response();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
+        UserAccount userAccount = (UserAccount) authentication.getPrincipal();
         PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        if (passwordEncoder.matches(changePassword.getCurrent_password(), user.getPassword())){
-            userRepository.updatePasswork(user.getId(),passwordEncoder.encode(changePassword.getNew_password()));
+        if (passwordEncoder.matches(changePassword.getCurrent_password(), userAccount.getPassword())){
+            userAccountRepository.updatePasswork(userAccount.getId_account(),passwordEncoder.encode(changePassword.getNew_password()));
             response.setCode(0);
             response.setData("Successful change");
         }else{
@@ -62,8 +73,8 @@ public class CustomerUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = findByEmail(email);
-        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), user.getAuthorities());
-        return user;
+        UserAccount userAccount = findByEmail(email);
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(userAccount.getEmail(), userAccount.getPassword(), userAccount.getAuthorities());
+        return userAccount;
     }
 }
