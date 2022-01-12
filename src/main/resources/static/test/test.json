@@ -1,0 +1,46 @@
+{
+  "peoples": [
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "imagePath": [
+        {
+          "path": "/images/test/avatar_1.png"
+        },
+        {
+          "path": "/images/test/avatar_2.png"
+        },
+        {
+          "path": "/images/test/avatar_3.png"
+        }
+      ],
+      "age": "20"
+    },
+    {
+      "firstName": "Anna",
+      "lastName": "Smith",
+      "imagePath": [
+        {
+          "path": "/images/test/avatar_4.png"
+        },
+        {
+          "path": "/images/test/avatar_5.png"
+        }
+      ],
+      "age": "25"
+    },
+    {
+      "firstName": "Peter",
+      "lastName": "Jones",
+      "imagePath": [
+        {
+          "path": "/images/test/avatar_6.png"
+        },
+        {
+          "path": "/images/test/avatar_7.png"
+        }
+      ],
+      "age": "29"
+    }
+  ]
+}
