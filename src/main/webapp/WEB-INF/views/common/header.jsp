@@ -1,6 +1,8 @@
 <%@page pageEncoding="utf-8" contentType="text/html; ISO-8859-1 " language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 
 <header class="p-3 text-white" style="background-color : #ffc0cb ">
     <div class="container">
@@ -11,11 +13,11 @@
             <div class="flex-shrink-0 dropdown">
                 <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser2"
                    data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="/images/nhd.png" width="32" height="32" class="rounded-circle">
+                    <img src="/user-image/${userImage.name_images}" width="32" height="32" class="rounded-circle">
                 </a>
                 <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
                     <li><a class="dropdown-item" href="/change_pass">Change Password</a></li>
-                    <li><a class="dropdown-item" href="/profile">Profile</a></li>
+                    <li><a class="dropdown-item" href="/editprofile/<sec:authentication property="principal.id_account"></sec:authentication>">Profile</a></li>
                     <li>
                         <hr class="dropdown-divider">
                     </li>

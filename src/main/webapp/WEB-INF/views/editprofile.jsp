@@ -76,27 +76,37 @@
     <script>
 
         $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                url: "/get-userimage",
+                dataType: "json",
+                success: function (msg) {
+                    alert("Save Success");
+                    // lấy danh sách image
+                    // var reader = new FileReader();
+                },
+                error: function (err) {
+                    alert("Save Failed");
+                }
+            });
             $(document).on("click", "i.del", function () {
                 $(this).parent().remove();
             });
             $(function () {
                 $(document).on("change", ".uploadFile", function () {
                     var uploadFile = $(this);
-                    var files = !!this.files ? this.files : [];
-                    if (!files.length || !window.FileReader) return; // no file selected, or no FileReader support
-
-                    if (/^image/.test(files[0].type)) {
+                    // var files = !!this.files ? this.files : [];
+                    // if (!files.length || !window.FileReader) return; // no file selected, or no FileReader support
+                    if (/^image/.test("D:\\img\\dmq1.jpg".type)) {
                         // only image file
                         var reader = new FileReader(); // instance of the FileReader
-                        reader.readAsDataURL(files[0]); // read the local file
-                        reader.fileName = files[0].name;
+                        reader.readAsDataURL("D:\\img\\dmq1.jpg"); // read the local file
 
                         reader.onloadend = function () {
                             // set image data as background of div
                             uploadFile
                                 .closest(".imgUp")
                                 .find(".imagePreview")
-                                .attr('fileName', this.fileName)
                                 .css("background-image", "url(" + this.result + ")");
 
                             uploadFile
@@ -120,104 +130,71 @@
             });
         });
 
-        $(document).ready(function () {
-            $("#profile").validate({
-                rules: {
-                    name: {
-                        required: true
-                    },
-                    gender: {
-                        required: true
-                    },
-                    birthday: {
-                        required: true
-                    },
-                    city: {
-                        required: true
-                    },
-                    education: {
-                        required: true
-                    },
-                    career: {
-                        required: true
-                    }, introduce: {
-                        required: true
-                    }
-                },
-                messages: {
-                    name: {
-                        required: "Please enter your name"
-                    },
-                    gender: {
-                        required: "Select your gender"
-                    },
-                    birthday: {
-                        required: "Select your date of birth"
-                    },
-                    city: {
-                        required: "Please enter your location"
-                    },
-                    education: {
-                        required: "Select your education"
-                    },
-                    career: {
-                        required: "Select your career"
-                    }, introduce: {
-                        required: "Please enter introduce yourself"
-                    }
-                },
-                submitHandler: function () {
-                    var data = serializeArrayToObject($("#profile"));
-                    $.ajax({
-                        type: "POST",
-                        url: "/create_profile",
-                        data: JSON.stringify(data),
-                        contentType: "application/json",
-                        dataType: "json",
-                        success: function (msg) {
-                            alert("Save Success");
-                            $("#button1").click();
-                            // window.location.href = "/encounters"
-                        },
-                        error: function (err) {
-                            alert("Save Failed");
-                        }
-                    });
-                }
-            });
-        })
-        $(document).ready(function () {
-            $("#user-images").validate({
-                submitHandler: function () {
-                    var data = serializeArrayToObject($("#user-images"));
-                    var arr = [];
-                    var filesCss = $('.imagePreview');
-                    if (filesCss.length > 1) {
-                        for (var i = 0; i < filesCss.length - 1; i++) {
-                            var f = {};
-                            f.nameFile = $(filesCss[i]).attr('filename');
-                            f.base64 = $(filesCss[i]).css('background-image').substring(5, $(filesCss[i]).css('background-image').length - 2);
-                            arr.push(f)
-                        }
-                    }
-                    data.files = arr;
-                    $.ajax({
-                        type: "POST",
-                        url: "/create_images",
-                        data: JSON.stringify(data),
-                        contentType: "application/json",
-                        dataType: "json",
-                        success: function (msg) {
-                            alert("Save image Success");
-                            window.location.href = "/encounters"
-                        },
-                        error: function (err) {
-                            alert("Save Failed");
-                        }
-                    });
-                }
-            });
-        })
+        // $(document).ready(function () {
+        //     $("#profile").validate({
+        //         rules: {
+        //             name: {
+        //                 required: true
+        //             },
+        //             gender: {
+        //                 required: true
+        //             },
+        //             birthday: {
+        //                 required: true
+        //             },
+        //             city: {
+        //                 required: true
+        //             },
+        //             education: {
+        //                 required: true
+        //             },
+        //             career: {
+        //                 required: true
+        //             }, introduce: {
+        //                 required: true
+        //             }
+        //         },
+        //         messages: {
+        //             name: {
+        //                 required: "Please enter your name"
+        //             },
+        //             gender: {
+        //                 required: "Select your gender"
+        //             },
+        //             birthday: {
+        //                 required: "Select your date of birth"
+        //             },
+        //             city: {
+        //                 required: "Please enter your location"
+        //             },
+        //             education: {
+        //                 required: "Select your education"
+        //             },
+        //             career: {
+        //                 required: "Select your career"
+        //             }, introduce: {
+        //                 required: "Please enter introduce yourself"
+        //             }
+        //         },
+        //         submitHandler: function () {
+        //             var data = serializeArrayToObject($("#profile"));
+        //             $.ajax({
+        //                 type: "POST",
+        //                 url: "/create_profile",
+        //                 data: JSON.stringify(data),
+        //                 contentType: "application/json",
+        //                 dataType: "json",
+        //                 success: function (msg) {
+        //                     alert("Save Success");
+        //                     window.location.href = "/encounters"
+        //                 },
+        //                 error: function (err) {
+        //                     alert("Save Failed");
+        //                 }
+        //             });
+        //         }
+        //     });
+        // })
 
         function serializeArrayToObject($form) {
             var array = $form.serializeArray();
@@ -267,29 +244,33 @@
                 </div>
                 <div class="col-sm-6">
                     <label for="firstName" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="firstName" name="name" placeholder="Your first name">
+                    <input type="text" class="form-control" id="firstName" name="name" placeholder="Your first name"
+                           value="${userDetailsEntities.name}">
                 </div>
                 <div class="col-sm-6">
                     <div class="form-label">Gender</div>
                     <select class="form-select" id="gender" name="gender">
                         <option value="" disabled selected>Select your option</option>
+                        <option selected="selected">${userDetailsEntities.gender}</option>
                         <option>Male</option>
                         <option>Female</option>
                     </select>
                 </div>
                 <div class="col-sm-6">
                     <label for="dateOfBirth" class="form-label">Birthday</label>
-                    <input type="date" class="form-control" id="dateOfBirth" name="birthday">
+                    <input type="date" class="form-control" id="dateOfBirth" name="birthday"
+                           value="${userDetailsEntities.birthday}">
                 </div>
                 <div class="col-sm-6">
                     <label for="address" class="form-label">Your city</label>
                     <input type="text" class="form-control" id="address" name="city"
-                           placeholder="Type your location">
+                           placeholder="Type your location" value="${userDetailsEntities.city}">
                 </div>
                 <div class="col-md-6">
                     <label for="education" class="form-label">Education</label>
                     <select class="form-select" id="education" name="education">
                         <option value="" disabled selected>Select your option</option>
+                        <option selected="selected">${userDetailsEntities.education}</option>
                         <option>College</option>
                         <option>University</option>
                         <option>Masters</option>
@@ -300,6 +281,7 @@
                     <label for="career" class="form-label">Career</label>
                     <select class="form-select" id="career" name="career">
                         <option value="" disabled selected>Select your option</option>
+                        <option selected="selected">${userDetailsEntities.career}</option>
                         <option>Nghệ thuật</option>
                         <option>Kinh doanh</option>
                         <option>Kỹ thuật</option>
@@ -329,7 +311,7 @@
                 <div class="col-sm-12">
                     <label for="introduce" class="form-label">About me</label>
                     <input type="text" class="form-control" id="introduce" placeholder="Introduce yourself"
-                           name="introduce">
+                           name="introduce" value="${userDetailsEntities.introduce}">
                 </div>
                 <div class="col-md-5"></div>
                 <div class="col-md-2">

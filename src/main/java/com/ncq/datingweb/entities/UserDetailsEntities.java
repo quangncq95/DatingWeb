@@ -15,7 +15,7 @@ public class UserDetailsEntities implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id_details;
     @Column(name = "id_account")
-    Long id_account;
+    Long idAccount;
     @Column(name = "name")
     String name;
     @Column(name = "gender")

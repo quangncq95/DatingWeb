@@ -20,7 +20,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         UserAccount userAccount = this.customerUserDetailService.findByEmail(authentication.getName());
-        request.getSession().setAttribute("currentUser", userAccount);
+        request.getSession().setAttribute("id", userAccount.getId_account());
         response.sendRedirect("/encounters");
     }
 }
