@@ -1,6 +1,7 @@
 package com.ncq.datingweb.controller;
 
 import com.ncq.datingweb.dto.*;
+import com.ncq.datingweb.entities.InterestedEntities;
 import com.ncq.datingweb.entities.UserAccount;
 import com.ncq.datingweb.entities.UserDetailsEntities;
 import com.ncq.datingweb.entities.UserImagesEntity;
@@ -87,6 +88,40 @@ public class HomeController {
         }
         return userDetaisDtos;
     }
+
+    // api liked you
+    @GetMapping("/api-liked-you")
+    public @ResponseBody List<UserDetaisDto> getProfileLiked(Principal principal){
+        UserAccount userAccount = customerUserDetailService.findByEmail(principal.getName());
+        List<InterestedEntities> interestedEntities = customerUserDetailService.findAllByIdAccount(userAccount.getId_account());
+        List<UserDetaisDto> userDetaisDtos = new ArrayList<>();
+        for (int i = 0; i < interestedEntities.size(); i++) {
+            List<InterestedEntities> interestedEntities1 = customerUserDetailService.findAllByIdAccount(interestedEntities.get(i).getIdLiked());
+            for (int j = 0; j < interestedEntities1.size(); j++) {
+                if (interestedEntities1.get(j).getIdLiked()==interestedEntities.get(i).getIdAccount()){
+                    UserDetaisDto userDetaisDto = new UserDetaisDto();
+                    UserDetailsEntities userDetailsEntities = customerUserDetailService.findFirstById_account(interestedEntities1.get(j).getIdAccount());
+                    List<UserImagesEntity> userImagesEntity = customerUserDetailService.findAllById_account(interestedEntities1.get(j).getIdAccount());
+                    userDetaisDto.setId_account(userDetailsEntities.getIdAccount());
+                    userDetaisDto.setName(userDetailsEntities.getName());
+                    userDetaisDto.setBirthday(userDetailsEntities.getBirthday());
+                    userDetaisDto.setCity(userDetailsEntities.getCity());
+                    userDetaisDto.setIntroduce(userDetailsEntities.getIntroduce());
+                    userDetaisDto.setEducation(userDetailsEntities.getEducation());
+                    userDetaisDto.setCareer(userDetailsEntities.getCareer());
+                    List<UserImagesDto> userImagesDtos = new ArrayList<>();
+                    for (int k = 0; k < userImagesEntity.size(); k++) {
+                        UserImagesDto userImagesDto = new UserImagesDto();
+                        userImagesDto.setName_images(userImagesEntity.get(k).getName_images());
+                        userImagesDtos.add(userImagesDto);
+                    }
+                    userDetaisDto.setUserImages(userImagesDtos);
+                    userDetaisDtos.add(userDetaisDto);
+                }
+            }
+        }
+        return userDetaisDtos;
+    }
     // API get image
     @GetMapping("/get-image")
     public @ResponseBody List<UserImagesDto> getImage(){
@@ -99,7 +134,6 @@ public class HomeController {
             userImagesDtos.add(userImagesDto);
         }
         return userImagesDtos;
-
     }
 
 
@@ -116,6 +150,13 @@ public class HomeController {
         SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userAccount, userAccount.getPassword(), userAccount.getAuthorities()));
         return new Response(1, userAccountDto);
     }
+
+    // save-interested
+//    @RequestMapping(value = "/save-interested", method = RequestMethod.POST, produces = "application/json")
+//    public String saveInterested(InterestedDto interestedDto ){
+//        customerUserDetailService.saveInterested(interestedDto);
+//        return "redirect:encounters";
+//    }
 
     @RequestMapping("/create_profile")
     @ResponseBody

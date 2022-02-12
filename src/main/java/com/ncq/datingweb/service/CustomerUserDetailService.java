@@ -1,9 +1,11 @@
 package com.ncq.datingweb.service;
 
 import com.ncq.datingweb.dto.*;
+import com.ncq.datingweb.entities.InterestedEntities;
 import com.ncq.datingweb.entities.UserAccount;
 import com.ncq.datingweb.entities.UserDetailsEntities;
 import com.ncq.datingweb.entities.UserImagesEntity;
+import com.ncq.datingweb.repository.InterestedRepository;
 import com.ncq.datingweb.repository.UserAccountRepository;
 import com.ncq.datingweb.repository.UserDetailsRepository;
 import com.ncq.datingweb.repository.UserImagesRepository;
@@ -37,6 +39,8 @@ public class CustomerUserDetailService implements UserDetailsService {
     UserDetailsRepository userDetailsRepository;
     @Autowired
     UserImagesRepository userImagesRepository;
+    @Autowired
+    InterestedRepository interestedRepository;
 
     public UserAccount findByEmail(String email) {
         return userAccountRepository.findByEmail(email);
@@ -46,19 +50,23 @@ public class CustomerUserDetailService implements UserDetailsService {
         return (UserDetailsEntities) userDetailsRepository.findFirstByIdAccount(id_account);
     }
 
-    public List<UserDetailsEntities> findAllByGender(String gender){
+    public List<UserDetailsEntities> findAllByGender(String gender) {
         return userDetailsRepository.findAllByGender(gender);
     }
 
-    public List<UserImagesEntity> findAll(){
-        return  userImagesRepository.findAll();
+    public List<InterestedEntities> findAllByIdAccount(Long id_account) {
+        return interestedRepository.findAllByIdAccount(id_account);
     }
 
-    public List<UserImagesEntity> findAllById_account(Long id_account){
-        return  userImagesRepository.findAllByIdAccount(id_account);
+    public List<UserImagesEntity> findAll() {
+        return userImagesRepository.findAll();
     }
 
-    public UserImagesEntity findFirstByIdAccount(Long id_account){
+    public List<UserImagesEntity> findAllById_account(Long id_account) {
+        return userImagesRepository.findAllByIdAccount(id_account);
+    }
+
+    public UserImagesEntity findFirstByIdAccount(Long id_account) {
         return userImagesRepository.findFirstByIdAccount(id_account);
     }
 
@@ -81,7 +89,7 @@ public class CustomerUserDetailService implements UserDetailsService {
 
     public static void saveToFile(BufferedImage img, String nameFile) throws IOException {
         File outputfile = new File(FOLDER + nameFile);
-        if (!outputfile.exists()){
+        if (!outputfile.exists()) {
             outputfile.createNewFile();
         }
         ImageIO.write(img, "png", outputfile);
@@ -126,6 +134,13 @@ public class CustomerUserDetailService implements UserDetailsService {
         userAccount.setEmail(userAccountDto.getEmail());
         userAccount.setPassword(passwordEncoder.encode(userAccountDto.getPassword()));
         return userAccountRepository.save(userAccount);
+    }
+
+    public InterestedEntities saveInterested(InterestedDto interestedDto) {
+        InterestedEntities interestedEntities = new InterestedEntities();
+        interestedEntities.setIdAccount(interestedDto.getId_account());
+        interestedEntities.setIdLiked(interestedDto.getId_liked());
+        return interestedRepository.save(interestedEntities);
     }
 
     public UserDetailsEntities saveUserDetails(ProfileDto profileDto) {
